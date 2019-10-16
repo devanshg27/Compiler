@@ -1,0 +1,30 @@
+bool seq[20];
+
+void print_combinations(int pos, int n) {
+	if(pos == n+1) {
+		for(int i=1; i<=n; i=i+1) {
+			if(seq[i]) {
+				print(arr[i], " ");
+			}
+		}
+		print('\n');
+		return;
+	}
+
+	seq[pos] = false;
+	print_combination(pos+1, n);
+	seq[pos] = true;
+	print_combination(pos+1, n);
+	return 0;
+}
+
+	
+
+int main() {
+	int n;
+
+	print("Enter n: ");
+	read(n);
+	
+	print_combination(1, n);
+}

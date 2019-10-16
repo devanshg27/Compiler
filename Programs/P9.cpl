@@ -1,0 +1,40 @@
+int a[1005][1005];
+int b[1005][1005];
+
+int main() {
+	int na;
+	int ma;
+	int nb;
+	int mb;
+
+	read(na);
+	read(ma);
+	read(nb);
+	read(mb);
+
+	for(int i=0; i<na; i=i+1) {
+		for(int j=0; j<ma; j=j+1) {
+			read(a[i][j]);
+		}
+	}
+
+	for(int i=0; i<nb; i=i+1) {
+		for(int j=0; j<mb; j=j+1) {
+			read(b[i][j]);
+		}
+	}
+
+	if(na != nb or ma != mb) {
+		print("Dimensions mismatch\n");
+	}
+	else {
+		for(int i=0; i<na; i=i+1) {
+			for(int j=0; j<ma; j=j+1) {
+				print(a[i][j]+b[i][j], " ");
+			}
+			print("\n");
+		}
+	}
+
+	return 0;
+}

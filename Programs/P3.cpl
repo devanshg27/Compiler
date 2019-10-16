@@ -1,0 +1,31 @@
+bool isPrime(int n) {
+	bool isPrime = true;
+
+	for(int i=2; i<n; i=i+1) {
+		if(n % i == 0) {
+			isPrime = false;
+		}
+	}
+
+	if(n <= 1) {
+		return false;
+	}
+	return isPrime;
+}
+
+int main() {
+	int n;
+	int ans = 0;
+
+	print("Enter the number n: ");
+	read(n);
+
+	for(int i=1; i<n; i=i+1) {
+		if(isPrime(i)) {
+			ans = ans + i;
+		}
+	}
+
+	print(ans);
+	return;
+}

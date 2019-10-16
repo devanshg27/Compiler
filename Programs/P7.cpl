@@ -1,0 +1,63 @@
+int arr[100];
+int out[100];
+int cnt[10];
+
+int getMax(int n) {
+	int mx = arr[0];
+	for (int i = 1; i < n; i=i+1) {
+		if (arr[i] > mx) {
+			mx = arr[i];
+		}
+	}
+	return mx;
+}
+
+void countSort(int arr[100], int n, int exp) {
+	for (int i = 0; i < n; i=i+1) {
+		cnt[i] = 0;
+	}
+
+	for (int i = 0; i < n; i=i+1) {
+		cnt[ (arr[i]/exp)%10 ]=cnt[ (arr[i]/exp)%10 ]+1;
+	}
+
+	for (int i = 1; i < 10; i=i+1) {
+		cnt[i] = cnt[i] + cnt[i - 1];
+	}
+
+	for (int i = n - 1; i >= 0; i=i-1) {
+		out[cnt[ (arr[i]/exp)%10 ] - 1] = arr[i];
+		cnt[ (arr[i]/exp)%10 ]=cnt[ (arr[i]/exp)%10 ]-1;
+	}
+
+	for (int i = 0; i < n; i=i+1) {
+		arr[i] = out[i];
+	}
+}
+
+void radixsort(int n) {
+	int m = getMax(arr, n);
+
+	for (int exp = 1; m/exp > 0; exp = exp * 10) {
+		countSort(n, exp);
+	}
+}
+
+int main() {
+	int n;
+   	
+   	print("Enter the number of elements n: ");
+   	read(n);
+   	
+   	print("Enter elements of the array: \n");
+   	for(int i=0; i<n; i=i+1) {
+      	read(arr[i]);
+   	}
+
+	radixsort(n);
+
+	print("Sorted array:\n");
+	for(int i=0; i<n; i=i+1) {
+      	print(arr[i], " ");
+	}
+}

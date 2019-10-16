@@ -1,53 +1,114 @@
-/* scanner for a toy Pascal-like language */
-
 %{
-/* need this for the call to atof() below */
 #include <bits/stdc++.h>
+#include "parser.tab.hh"
 using namespace std;
 
 extern "C" int yylex();
+int line_no = 1;
 %}
 
+COMMA ","
+SEMICOLON ";"
+QMARK "?"
+COLON ":"
+
+ASN "="
+ADD "+"
+SUB "-"
+MUL "*"
+DIV "/"
+MOD "%"
+
+LPAREN "("
+RPAREN ")"
+LBRACE "{"
+RBRACE "}"
+LSQUARE "["
+RSQUARE "]"
+
+OR "or"
+AND "and"
+NOT "not"
+XOR "xor"
+EQL "=="
+NEQ "!="
+LTE "<="
+GTE ">="
+LES "<"
+GRE ">"
+
+INT "int"
+UNSIGNED "unsigned"
+BOOL "bool"
+CHAR "char"
+VOID "void"
+
+FOR "for"
+WHILE "while"
+IF "if"
+ELIF "elif"
+ELSE "else"
+
+RETURN "return"
+
 DIGIT [0-9]
-ID [a-zA-Z][A-Za-z0-9]*
+ALPHA [a-zA-Z_]
+ALPHANUM [0-9a-zA-Z_]
+TRUE "true"
+FALSE "false"
+STR ([^\\"']|\\n|\\t|\\'|\\\\|\\\"|\\r|\\)
 
 %%
 
-"-"?{DIGIT}+ {
-	printf( "An integer literal: %s (%d)\n", yytext, atoi( yytext ) );
-}
+{COMMA} 			 	 {return COMMA; }
+{SEMICOLON} 			 {return SEMICOLON; }
+{QMARK} 				 {return QMARK; }
+{COLON} 				 {return COLON; }
 
-"-"{DIGIT}+"."{DIGIT}* {
-	printf( "A float literal: %s (%g)\n", yytext, atof( yytext ) );
-}
+{ASN} 					 {return ASN; }
+{ADD} 					 {return ADD; }
+{SUB} 					 {return SUB; }
+{MUL} 					 {return MUL; }
+{DIV} 					 {return DIV; }
+{MOD} 					 {return MOD; }
 
-\'.\' {
-	printf( "A character literal: %s (%c)\n", yytext, yytext[1] );
-}
+{LPAREN}  				 {return LPAREN; }
+{RPAREN}  				 {return RPAREN; }
+{LBRACE}  				 {return LBRACE; }
+{RBRACE}  				 {return RBRACE; }
+{LSQUARE}  				 {return LSQUARE; }
+{RSQUARE}  				 {return RSQUARE; }
 
-\".*\" {
-	printf( "A string literal: %s (%s)\n", yytext, string(yytext).substr(1,strlen(yytext)-2).c_str() );
-}
+{OR} 					 {return OR; }
+{AND} 					 {return AND; }
+{NOT} 					 {return NOT; }
+{XOR} 					 {return XOR; }
+{EQL}					 {return EQL; }
+{NEQ}					 {return NEQ; }
+{LTE}					 {return LTE; }
+{GTE}					 {return GTE; }
+{LES}					 {return LES; }
+{GRE}					 {return GRE; }
 
-"true"|"false" {
-	printf("A boolean literal: %s (%s)\n", yytext, yytext);
-}
+{INT} 					 {return INT; }
+{UNSIGNED} 				 {return UNSIGNED; }
+{BOOL} 					 {return BOOL; }
+{CHAR} 					 {return CHAR; }
+{VOID} 					 {return VOID; }
 
-"+"|"-"|"*"|"/"|"and"|"or"|"not" printf( "An operator: %s\n", yytext );
+{FOR} 					 {return FOR; }
+{WHILE} 				 {return WHILE; }
+{IF} 					 {return IF; }
+{ELIF} 					 {return ELIF; }
+{ELSE} 					 {return ELSE; }
+{RETURN} 				 {return RETURN; }
 
-if|else|for|while {
-	printf( "A keyword: %s\n", yytext );
-}
+{TRUE}|{FALSE}           {return BOOL_LITERAL; }
+{DIGIT}+                 {return INT_LITERAL; }
+{ALPHA}{ALPHANUM}*       {return IDENTIFIER; }
+\'{STR}\'                {return CHAR_LITERAL; }
+\"{STR}*\"               {return STRING_LITERAL; }
 
-{ID} printf( "An identifier: %s\n", yytext );
-
-[ \t\n]+ /* remove whitespace */
-
-. printf( "Unrecognized character: %s\n", yytext );
-
+[ \t\v\r]+ 				 {/*whitespace*/}
+\n                       {++line_no; }
 %%
-
-int main() {
-	yylex();
-}
-

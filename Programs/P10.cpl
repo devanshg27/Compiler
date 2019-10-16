@@ -1,0 +1,50 @@
+int a[1005][1005];
+int b[1005][1005], c[1005][1005];
+
+int main() {
+	int na, ma, nb, mb;
+
+	read(na);
+	read(ma);
+	read(nb);
+	read(mb);
+ 
+	for(int i=0; i<na; i=i+1) {
+		for(int j=0; j<ma; j=j+1) {
+			read(a[i][j]);
+		}
+	}
+
+	for(int i=0; i<nb; i=i+1) {
+		for(int j=0; j<mb; j=j+1) {
+			read(b[i][j]);
+		}
+	}
+ 
+	if (ma != nb) {
+		print("Dimensions mismatch.\n");
+	}
+	else {
+		for (int i = 0; i < na; i=i+1) {
+			for (int j = 0; j < mb; j=j+1) {
+				int sum = 0;
+				for (int k = 0; k < ma; k=k+1) {
+					sum = sum + first[i][k]*second[k][j];
+				}
+ 
+				c[i][j] = sum;
+			}
+		}
+ 
+		print("The product of the matrices is:\n");
+ 
+		for (int i = 0; i < na; i=i+1) {
+			for (int j = 0; j < mb; j=j+1) {
+				print(c[i][j], " ");
+			}
+			print("\n");
+		}
+	}
+ 
+	return 0;
+}

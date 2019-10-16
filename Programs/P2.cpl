@@ -1,0 +1,24 @@
+int main () {
+	int n;
+	int k;
+	bool isPrime = true;
+	
+	print("Enter the number n: ");
+	read(n);
+
+	for(int i=2; i<n; i=i+1) {
+		if(n % i == 0) {
+			isPrime = false;
+		}
+	}
+
+	if(n <= 1) {
+		print("Neither prime nor composite.");
+	}
+	elif(isPrime) {
+		print("Prime.");
+	}
+	else{
+		print("Composite.");
+	}
+}

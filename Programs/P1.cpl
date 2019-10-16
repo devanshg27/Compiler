@@ -1,0 +1,26 @@
+int pow(int num, int k) {
+	int result = 1;
+	
+	while (k > 0) {
+		result = result * num;
+		k = k - 1;
+	}
+	
+	return result;
+}
+
+int main () {
+	int n;
+	int k;
+	int ans = 0;
+
+	print("Enter the numbers n and k: ");
+	read(n);
+	read(k);
+
+	for(int i=1; i<=n; i=i+1) {
+		ans = ans + pow(i, k);
+	}
+
+	print(ans);
+}
