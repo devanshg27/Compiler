@@ -2,10 +2,13 @@
 
 #include <bits/stdc++.h>
 
+class AbstractDispatcher;
+
 class Literal {
 private:
 public:
     Literal();
+    virtual void Accept(AbstractDispatcher& dispatcher) = 0;
     ~Literal();
 };
 
@@ -14,6 +17,7 @@ private:
     char val;
 public:
     CharacterLiteral(char _val);
+    void Accept(AbstractDispatcher& dispatcher) override;
     ~CharacterLiteral();
 };
 
@@ -22,6 +26,7 @@ private:
     int val;
 public:
     IntegerLiteral(int _val);
+    void Accept(AbstractDispatcher& dispatcher) override;
     ~IntegerLiteral();
 };
 
@@ -30,6 +35,7 @@ private:
     bool val;
 public:
     BooleanLiteral(bool _val);
+    void Accept(AbstractDispatcher& dispatcher) override;
     ~BooleanLiteral();
 };
 
@@ -38,5 +44,6 @@ private:
     std::string val;
 public:
     StringLiteral(std::string _val);
+    void Accept(AbstractDispatcher& dispatcher) override;
     ~StringLiteral();
 };

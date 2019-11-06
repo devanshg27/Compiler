@@ -16,6 +16,7 @@
 #include "block_statement.h"
 #include "function_call_statement.h"
 #include "compound_expression.h"
+#include "visitor.h"
 
 union node {
     int int_value;

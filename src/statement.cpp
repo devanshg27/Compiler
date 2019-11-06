@@ -1,4 +1,5 @@
 #include "statement.h"
+#include "visitor.h"
 
 Statement::Statement() {}
 Statement::~Statement() {}
@@ -15,6 +16,9 @@ Assignment_statement::Assignment_statement(std::string _id, Expression* _posx, E
     posx = _posx;
     posy = _posy;
 }
+void Assignment_statement::Accept(AbstractDispatcher& dispatcher) {
+    dispatcher.Dispatch(*this);
+}
 Assignment_statement::~Assignment_statement() {
     if (posx != NULL)
         delete posx;
@@ -23,4 +27,7 @@ Assignment_statement::~Assignment_statement() {
 }
 
 Return_statement::Return_statement(Expression* _expr) : expr(_expr) {}
+void Return_statement::Accept(AbstractDispatcher& dispatcher) {
+    dispatcher.Dispatch(*this);
+}
 Return_statement::~Return_statement() { delete expr; }

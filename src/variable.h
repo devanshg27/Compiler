@@ -3,6 +3,8 @@
 #include <bits/stdc++.h>
 #include "expression.h"
 
+class AbstractDispatcher;
+
 class Var_decl {
 private:
     std::string type, id;
@@ -13,6 +15,7 @@ public:
     Var_decl(std::string, std::string, Expression *);
     Var_decl(std::string, std::string, int, Expression *);
     Var_decl(std::string, std::string, int, int, Expression *);
+    void Accept(AbstractDispatcher& dispatcher);
     std::string getType();
     ~Var_decl();
 };
@@ -25,5 +28,6 @@ public:
     void add_var_decl(std::string, Expression*);
     void add_var_decl(std::string, int, Expression*);
     void add_var_decl(std::string, int, int, Expression*);
+    void Accept(AbstractDispatcher& dispatcher);
     ~Multivar_decl();
 };

@@ -5,11 +5,14 @@
 #include "literal.h"
 #include "function_call.h"
 
+class AbstractDispatcher;
+
 class ExpressionLiteral : public Expression {
 private:
     Literal* expr;
 public:
     ExpressionLiteral(Literal*);
+    void Accept(AbstractDispatcher& dispatcher) override;
     ~ExpressionLiteral();
 };
 
@@ -22,6 +25,7 @@ public:
     ExpressionIdentifier(std::string);
     ExpressionIdentifier(std::string, Expression*);
     ExpressionIdentifier(std::string, Expression*, Expression*);
+    void Accept(AbstractDispatcher& dispatcher) override;
     ~ExpressionIdentifier();
 };
 
@@ -32,6 +36,7 @@ private:
     Expression* exp2;
 public:
     Binary_op(Expression*, std::string, Expression*);
+    void Accept(AbstractDispatcher& dispatcher) override;
     ~Binary_op();
 };
 
@@ -41,6 +46,7 @@ private:
     Expression* expr;
 public:
     Unary_op(std::string, Expression*);
+    void Accept(AbstractDispatcher& dispatcher) override;
     ~Unary_op();
 };
 
@@ -51,6 +57,7 @@ private:
     Expression* exp2;
 public:
     Ternary_op(Expression*,Expression*,Expression*);
+    void Accept(AbstractDispatcher& dispatcher) override;
     ~Ternary_op();
 };
 
@@ -59,6 +66,7 @@ private:
     Function_call* fcall;
 public:
     ExpressionFunctionCall(Function_call*);
+    void Accept(AbstractDispatcher& dispatcher) override;
     ~ExpressionFunctionCall();
 };
 
@@ -67,5 +75,6 @@ private:
     Expression* expr;
 public:
     ExpressionBracketed(Expression*);
+    void Accept(AbstractDispatcher& dispatcher) override;
     ~ExpressionBracketed();
 };
