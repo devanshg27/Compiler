@@ -9,13 +9,21 @@ set (CMAKE_CXX_STANDARD 11)
 find_package(FLEX REQUIRED)
 find_package(BISON REQUIRED)
 
-FLEX_TARGET(lexer scanner.l "${OUTPUT_DIRECTORY}/scanner.lex.cc")
+include_directories(src)
 
-BISON_TARGET(parser parser.yy "${OUTPUT_DIRECTORY}/parser.tab.cc")
+file(GLOB SOURCES
+    "src/*.h"
+    "src/*.cpp"
+)
+
+FLEX_TARGET(lexer src/scanner.l "${OUTPUT_DIRECTORY}/scanner.lex.cc")
+
+BISON_TARGET(parser src/parser.yy "${OUTPUT_DIRECTORY}/parser.tab.cc")
 
 ADD_FLEX_BISON_DEPENDENCY(lexer parser)
 
 add_executable(cpl_parser
     ${FLEX_lexer_OUTPUTS}
-    ${BISON_parser_OUTPUTS})
+    ${BISON_parser_OUTPUTS}
+    ${SOURCES})
 target_link_libraries(cpl_parser ${FLEX_LIBRARIES})
