@@ -8,7 +8,7 @@ void Statement_list::Accept(AbstractDispatcher& dispatcher) {
 }
 
 void Statement_list::add_statement(Statement* s) {
-    statements.push_back(s);
+    statements.push_front(s);
 }
 
 Statement_list::~Statement_list() {

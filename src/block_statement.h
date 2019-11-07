@@ -7,9 +7,8 @@
 class AbstractDispatcher;
 
 class BlockStatement : public Statement{
-private:
-    Block* block;
 public:
+    Block* block;
     BlockStatement(Block *);
     void Accept(AbstractDispatcher& dispatcher) override;
     ~BlockStatement();

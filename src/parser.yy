@@ -1,6 +1,7 @@
 %{
 #include <bits/stdc++.h>
 #include "node.h"
+#include "dispatcher_pretty_print.h"
 using namespace std;
 #define YYDEBUG 1
 extern "C" int yylex();
@@ -185,8 +186,11 @@ ifStatement: IF LPAREN Expression RPAREN Block elifStatementList {
 int main(int argc, char **argv) {
     // yydebug = 1;
     yyparse();
+    Dispatcher_pretty_print pretty_printer;
+    root_node->Accept(pretty_printer);
 }
 
 void yyerror(const char *s) {
     cerr << "Syntax error on line " << line_no << ": " << s << endl;
+    exit(0);
 }

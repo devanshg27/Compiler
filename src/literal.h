@@ -5,7 +5,6 @@
 class AbstractDispatcher;
 
 class Literal {
-private:
 public:
     Literal();
     virtual void Accept(AbstractDispatcher& dispatcher) = 0;
@@ -13,36 +12,32 @@ public:
 };
 
 class CharacterLiteral : public Literal {
-private:
-    char val;
 public:
+    char val;
     CharacterLiteral(char _val);
     void Accept(AbstractDispatcher& dispatcher) override;
     ~CharacterLiteral();
 };
 
 class IntegerLiteral : public Literal {
-private:
-    int val;
 public:
+    int val;
     IntegerLiteral(int _val);
     void Accept(AbstractDispatcher& dispatcher) override;
     ~IntegerLiteral();
 };
 
 class BooleanLiteral : public Literal {
-private:
-    bool val;
 public:
+    bool val;
     BooleanLiteral(bool _val);
     void Accept(AbstractDispatcher& dispatcher) override;
     ~BooleanLiteral();
 };
 
 class StringLiteral : public Literal {
-private:
-    std::string val;
 public:
+    std::string val;
     StringLiteral(std::string _val);
     void Accept(AbstractDispatcher& dispatcher) override;
     ~StringLiteral();

@@ -7,11 +7,10 @@
 class AbstractDispatcher;
 
 class If_statement : public Statement {
-private:
+public:
     Expression* cond;
     Block* block;
     If_statement* else_statement;
-public:
     If_statement(Expression*, Block*, If_statement*);
     void Accept(AbstractDispatcher& dispatcher) override;
     ~If_statement();

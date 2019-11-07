@@ -4,7 +4,7 @@
 Function_list::Function_list() {}
 
 void Function_list::add_function_decl(Function_decl* decl) {
-    decls.push_back(decl);
+    decls.push_front(decl);
 }
 void Function_list::Accept(AbstractDispatcher& dispatcher) {
     dispatcher.Dispatch(*this);

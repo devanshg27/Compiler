@@ -7,7 +7,7 @@ void Parameter_list::Accept(AbstractDispatcher& dispatcher) {
     dispatcher.Dispatch(*this);
 }
 void Parameter_list::add_parameter(Expression* p) {
-    parameters.push_back(p);
+    parameters.push_front(p);
 }
 
 Parameter_list::~Parameter_list() {

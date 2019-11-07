@@ -22,7 +22,39 @@ void BooleanLiteral::Accept(AbstractDispatcher& dispatcher) {
 }
 BooleanLiteral::~BooleanLiteral() {}
 
-StringLiteral::StringLiteral(std::string _val) : val(_val) {}
+StringLiteral::StringLiteral(std::string _val) {
+    val = "";
+    for(int i=0; i<_val.length(); ++i) {
+        if(_val[i] != '\\') val += _val[i];
+        else if(_val[i+1] == 'n') {
+            val += '\n';
+            ++i;
+        }
+        else if(_val[i+1] == 't') {
+            val += '\t';
+            ++i;
+        }
+        else if(_val[i+1] == '\'') {
+            val += '\'';
+            ++i;
+        }
+        else if(_val[i+1] == '\\') {
+            val += '\\';
+            ++i;
+        }
+        else if(_val[i+1] == '\"') {
+            val += '\"';
+            ++i;
+        }
+        else if(_val[i+1] == 'r') {
+            val += '\r';
+            ++i;
+        }
+        else {
+            assert(0);
+        }
+    }
+}
 void StringLiteral::Accept(AbstractDispatcher& dispatcher) {
     dispatcher.Dispatch(*this);
 }

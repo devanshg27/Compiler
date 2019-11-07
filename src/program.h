@@ -7,10 +7,9 @@
 class AbstractDispatcher;
 
 class Program {
-private:
+public:
     Variable_list *v_list;
     Function_list *f_list;
-public:
     Program(Variable_list*, Function_list*);
     void Accept(AbstractDispatcher& dispatcher);
     ~Program();

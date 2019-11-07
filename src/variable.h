@@ -6,12 +6,11 @@
 class AbstractDispatcher;
 
 class Var_decl {
-private:
+public:
     std::string type, id;
     int *shapex;
     int *shapey;
     Expression *initial_value;
-public:
     Var_decl(std::string, std::string, Expression *);
     Var_decl(std::string, std::string, int, Expression *);
     Var_decl(std::string, std::string, int, int, Expression *);
@@ -21,9 +20,8 @@ public:
 };
 
 class Multivar_decl {
-private:
-    std::vector<Var_decl*> decls;
 public:
+    std::vector<Var_decl*> decls;
     Multivar_decl(Var_decl*);
     void add_var_decl(std::string, Expression*);
     void add_var_decl(std::string, int, Expression*);

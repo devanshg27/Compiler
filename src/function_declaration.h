@@ -7,9 +7,8 @@
 class AbstractDispatcher;
 
 class Argument_list {
-private:
-    std::vector<Var_decl*> arguments;
 public:
+    std::deque<Var_decl*> arguments;
     Argument_list();
     void add_argument(Var_decl*);
     void Accept(AbstractDispatcher& dispatcher);
@@ -17,11 +16,10 @@ public:
 };
 
 class Function_decl {
-private:
+public:
     std::string type, id;
     Argument_list* a_list;
     Block* blk;
-public:
     Function_decl(std::string, std::string, Argument_list*, Block*);
     void Accept(AbstractDispatcher& dispatcher);
     ~Function_decl();

@@ -7,9 +7,8 @@
 class AbstractDispatcher;
 
 class Function_call_statement : public Statement{
-private:
-    Function_call* fcall;
 public:
+    Function_call* fcall;
     Function_call_statement(Function_call *);
     void Accept(AbstractDispatcher& dispatcher) override;
     ~Function_call_statement();

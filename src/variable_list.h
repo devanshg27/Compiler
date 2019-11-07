@@ -6,9 +6,8 @@
 class AbstractDispatcher;
 
 class Variable_list {
-private:
-    std::vector<Multivar_decl*> decls;
 public:
+    std::vector<Multivar_decl*> decls;
     Variable_list();
     void Accept(AbstractDispatcher& dispatcher);
     void add_multivar_decl(Multivar_decl*);

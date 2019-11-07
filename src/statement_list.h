@@ -6,9 +6,8 @@
 class AbstractDispatcher;
 
 class Statement_list {
-private:
-    std::vector<Statement*> statements;
 public:
+    std::deque<Statement*> statements;
     Statement_list();
     void Accept(AbstractDispatcher& dispatcher);
     void add_statement(Statement*);

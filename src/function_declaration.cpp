@@ -6,7 +6,7 @@ void Argument_list::Accept(AbstractDispatcher& dispatcher) {
     dispatcher.Dispatch(*this);
 }
 void Argument_list::add_argument(Var_decl* arg) {
-    arguments.push_back(arg);
+    arguments.push_front(arg);
 }
 
 Argument_list::~Argument_list() {
