@@ -59,6 +59,7 @@ ALPHANUM [0-9a-zA-Z_]
 TRUE "true"
 FALSE "false"
 STR ([^\\"']|\\n|\\t|\\'|\\\\|\\\"|\\r)
+UNSIGNED_SUFFIX [uU]
 
 %%
 
@@ -107,6 +108,7 @@ STR ([^\\"']|\\n|\\t|\\'|\\\\|\\\"|\\r)
 
 {TRUE}|{FALSE}           {yylval.bool_value = (strcmp(yytext, "true") == 0); return BOOL_LITERAL; }
 {DIGIT}+                 {yylval.int_value = atoi(yytext); return INT_LITERAL; }
+{DIGIT}+{UNSIGNED_SUFFIX} {yylval.unsigned_value = atoi(yytext); return UNSIGNED_LITERAL; }
 {ALPHA}{ALPHANUM}*       {yylval.str_value = strdup(yytext); return IDENTIFIER; }
 \'{STR}\'                {
     if(yytext[1] != '\\') yylval.char_value = yytext[1];

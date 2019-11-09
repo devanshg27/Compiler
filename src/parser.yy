@@ -13,6 +13,7 @@ Program *root_node = NULL;
 
 %token <str_value> IDENTIFIER
 %token <int_value> INT_LITERAL
+%token <unsigned_value> UNSIGNED_LITERAL
 %token <str_value> STRING_LITERAL
 %token <bool_value> BOOL_LITERAL
 %token <char_value> CHAR_LITERAL
@@ -101,6 +102,7 @@ Variable: Datatype IDENTIFIER ASN Expression { $$ = new Var_decl(string($1), str
 
 Literal: CHAR_LITERAL   { $$ = new CharacterLiteral($1); }
 | INT_LITERAL           { $$ = new IntegerLiteral($1); }
+| UNSIGNED_LITERAL      { $$ = new UnsignedLiteral($1); }
 | BOOL_LITERAL          { $$ = new BooleanLiteral($1); }
 | STRING_LITERAL        { $$ = new StringLiteral(string($1)); }
 

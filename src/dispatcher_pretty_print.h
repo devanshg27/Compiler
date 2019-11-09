@@ -34,6 +34,7 @@ public:
     void Dispatch(StringLiteral&);
     void Dispatch(Ternary_op&);
     void Dispatch(Unary_op&);
+    void Dispatch(UnsignedLiteral&);
     void Dispatch(Var_decl&);
     void Dispatch(Variable_list&);
     void Dispatch(While_statement&);

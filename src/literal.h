@@ -27,6 +27,14 @@ public:
     ~IntegerLiteral();
 };
 
+class UnsignedLiteral : public Literal {
+public:
+    unsigned val;
+    UnsignedLiteral(unsigned _val);
+    void Accept(AbstractDispatcher& dispatcher) override;
+    ~UnsignedLiteral();
+};
+
 class BooleanLiteral : public Literal {
 public:
     bool val;

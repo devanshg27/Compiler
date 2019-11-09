@@ -16,6 +16,12 @@ void IntegerLiteral::Accept(AbstractDispatcher& dispatcher) {
 }
 IntegerLiteral::~IntegerLiteral() {}
 
+UnsignedLiteral::UnsignedLiteral(unsigned _val) : val(_val) {}
+void UnsignedLiteral::Accept(AbstractDispatcher& dispatcher) {
+    dispatcher.Dispatch(*this);
+}
+UnsignedLiteral::~UnsignedLiteral() {}
+
 BooleanLiteral::BooleanLiteral(bool _val) : val(_val) {}
 void BooleanLiteral::Accept(AbstractDispatcher& dispatcher) {
     dispatcher.Dispatch(*this);

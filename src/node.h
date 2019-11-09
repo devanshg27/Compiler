@@ -19,6 +19,7 @@
 #include "visitor.h"
 
 union node {
+    unsigned unsigned_value;
     int int_value;
     char char_value;
     bool bool_value;

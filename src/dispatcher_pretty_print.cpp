@@ -248,6 +248,9 @@ void Dispatcher_pretty_print::Dispatch(Unary_op& z) {
     cout << z.op << " ";
     z.expr->Accept(*this);
 }
+void Dispatcher_pretty_print::Dispatch(UnsignedLiteral& z) {
+    cout << z.val << "u";
+}
 void Dispatcher_pretty_print::Dispatch(Var_decl& z) {
     assert(0);
 }

@@ -31,6 +31,7 @@ public:
     virtual void Dispatch(StringLiteral&) = 0;
     virtual void Dispatch(Ternary_op&) = 0;
     virtual void Dispatch(Unary_op&) = 0;
+    virtual void Dispatch(UnsignedLiteral&) = 0;
     virtual void Dispatch(Var_decl&) = 0;
     virtual void Dispatch(Variable_list&) = 0;
     virtual void Dispatch(While_statement&) = 0;
