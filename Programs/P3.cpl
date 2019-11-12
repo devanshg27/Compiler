@@ -27,5 +27,5 @@ int main() {
 	}
 
 	print(ans);
-	return;
+	return 0;
 }

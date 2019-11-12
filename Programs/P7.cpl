@@ -12,7 +12,7 @@ int getMax(int n) {
 	return mx;
 }
 
-void countSort(int arr[100], int n, int exp) {
+void countSort(int n, int exp) {
 	for (int i = 0; i < n; i=i+1) {
 		cnt[i] = 0;
 	}
@@ -45,19 +45,19 @@ void radixsort(int n) {
 
 int main() {
 	int n;
-   	
-   	print("Enter the number of elements n: ");
-   	read(n);
-   	
-   	print("Enter elements of the array: \n");
-   	for(int i=0; i<n; i=i+1) {
-      	read(arr[i]);
-   	}
+	
+	print("Enter the number of elements n: ");
+	read(n);
+
+	print("Enter elements of the array: \n");
+	for(int i=0; i<n; i=i+1) {
+	read(arr[i]);
+	}
 
 	radixsort(n);
 
 	print("Sorted array:\n");
 	for(int i=0; i<n; i=i+1) {
-      	print(arr[i], " ");
+	print(arr[i], " ");
 	}
 }

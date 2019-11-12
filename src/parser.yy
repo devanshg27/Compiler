@@ -3,6 +3,7 @@
 #include "node.h"
 #include "dispatcher_pretty_print.h"
 #include "dispatcher_visitor_test.h"
+#include "dispatcher_semantic_check.h"
 using namespace std;
 #define YYDEBUG 1
 extern "C" int yylex();
@@ -189,10 +190,12 @@ ifStatement: IF LPAREN Expression RPAREN Block elifStatementList {
 int main(int argc, char **argv) {
     // yydebug = 1;
     yyparse();
+    Dispatcher_semantic_check semantic_checker;
+    root_node->Accept(semantic_checker);
     Dispatcher_pretty_print pretty_printer;
-    Dispatcher_visitor_test visitor_test;
+    // Dispatcher_visitor_test visitor_test;
     root_node->Accept(pretty_printer);
-    root_node->Accept(visitor_test);
+    // root_node->Accept(visitor_test);
 }
 
 void yyerror(const char *s) {

@@ -29,7 +29,7 @@ int main() {
 			for (int j = 0; j < mb; j=j+1) {
 				int sum = 0;
 				for (int k = 0; k < ma; k=k+1) {
-					sum = sum + first[i][k]*second[k][j];
+					sum = sum + a[i][k]*b[k][j];
 				}
  
 				c[i][j] = sum;

@@ -4,7 +4,7 @@ void print_combinations(int pos, int n) {
 	if(pos == n+1) {
 		for(int i=1; i<=n; i=i+1) {
 			if(seq[i]) {
-				print(arr[i], " ");
+				print(i, " ");
 			}
 		}
 		print('\n');
@@ -12,10 +12,10 @@ void print_combinations(int pos, int n) {
 	}
 
 	seq[pos] = false;
-	print_combination(pos+1, n);
+	print_combinations(pos+1, n);
 	seq[pos] = true;
-	print_combination(pos+1, n);
-	return 0;
+	print_combinations(pos+1, n);
+	return;
 }
 
 	
@@ -26,5 +26,5 @@ int main() {
 	print("Enter n: ");
 	read(n);
 	
-	print_combination(1, n);
+	print_combinations(1, n);
 }
