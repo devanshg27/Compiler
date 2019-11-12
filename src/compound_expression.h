@@ -12,6 +12,7 @@ public:
     Literal* expr;
     ExpressionLiteral(Literal*);
     void Accept(AbstractDispatcher& dispatcher) override;
+    std::pair<std::string, std::pair<Expression*, Expression*>>* getIdentifier() override;
     ~ExpressionLiteral();
 };
 
@@ -24,6 +25,7 @@ public:
     ExpressionIdentifier(std::string, Expression*);
     ExpressionIdentifier(std::string, Expression*, Expression*);
     void Accept(AbstractDispatcher& dispatcher) override;
+    std::pair<std::string, std::pair<Expression*, Expression*>>* getIdentifier() override;
     ~ExpressionIdentifier();
 };
 
@@ -34,6 +36,7 @@ public:
     Expression* exp2;
     Binary_op(Expression*, std::string, Expression*);
     void Accept(AbstractDispatcher& dispatcher) override;
+    std::pair<std::string, std::pair<Expression*, Expression*>>* getIdentifier() override;
     ~Binary_op();
 };
 
@@ -43,6 +46,7 @@ public:
     Expression* expr;
     Unary_op(std::string, Expression*);
     void Accept(AbstractDispatcher& dispatcher) override;
+    std::pair<std::string, std::pair<Expression*, Expression*>>* getIdentifier() override;
     ~Unary_op();
 };
 
@@ -53,6 +57,7 @@ public:
     Expression* exp2;
     Ternary_op(Expression*,Expression*,Expression*);
     void Accept(AbstractDispatcher& dispatcher) override;
+    std::pair<std::string, std::pair<Expression*, Expression*>>* getIdentifier() override;
     ~Ternary_op();
 };
 
@@ -61,6 +66,7 @@ public:
     Function_call* fcall;
     ExpressionFunctionCall(Function_call*);
     void Accept(AbstractDispatcher& dispatcher) override;
+    std::pair<std::string, std::pair<Expression*, Expression*>>* getIdentifier() override;
     ~ExpressionFunctionCall();
 };
 
@@ -69,5 +75,6 @@ public:
     Expression* expr;
     ExpressionBracketed(Expression*);
     void Accept(AbstractDispatcher& dispatcher) override;
+    std::pair<std::string, std::pair<Expression*, Expression*>>* getIdentifier() override;
     ~ExpressionBracketed();
 };

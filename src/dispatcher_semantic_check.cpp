@@ -13,6 +13,14 @@ const map<string,Type> typeMap = {
 
 void Dispatcher_semantic_check::Dispatch(Argument_list& z) {
     for(auto&y: z.arguments) {
+        if(y->shapex || y->shapey) {
+            cerr << "Arrays can't be used as arguments.";
+            exit(0);
+        }
+        if(y->initial_value) {
+            cerr << "Default arguments are not supported yet.";
+            exit(0);
+        }
         y->Accept(*this);
     }
 }
@@ -136,12 +144,25 @@ void Dispatcher_semantic_check::Dispatch(For_statement& z) {
     var_context.resize_context(oldsz);
 }
 void Dispatcher_semantic_check::Dispatch(Function_call& z) {
+    if(z.id == "read") {
+        for(auto&p: z.p_list->parameters) {
+            auto y = p->getIdentifier();
+            if(y == NULL) {
+                cerr << "read must be given an identifier as parameter.";
+                exit(0);
+            }
+            if(y->second.first) y->second.first->Accept(*this);
+            if(y->second.second) y->second.second->Accept(*this);
+            delete y;
+        }
+        return;
+    }
     vector<Type> temp;
     for(auto&p: z.p_list->parameters) {
         p->Accept(*this);
         temp.push_back(retval);
     }
-    if(z.id == "print" or z.id == "read") {
+    if(z.id == "print") {
         return;
     }
     else {
