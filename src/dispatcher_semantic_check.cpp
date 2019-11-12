@@ -151,8 +151,19 @@ void Dispatcher_semantic_check::Dispatch(Function_call& z) {
                 cerr << "read must be given an identifier as parameter.";
                 exit(0);
             }
-            if(y->second.first) y->second.first->Accept(*this);
-            if(y->second.second) y->second.second->Accept(*this);
+            int cnt = 0;
+            if(y->second.first) {
+                y->second.first->Accept(*this);
+                ++cnt;
+            }
+            if(y->second.second) {
+                y->second.second->Accept(*this);
+                ++cnt;
+            }
+            if(cnt != var_context.get_value(y->first).second) {
+                cerr << "Wrong number of dimensions for array";
+                exit(0);
+            }
             delete y;
         }
         return;
