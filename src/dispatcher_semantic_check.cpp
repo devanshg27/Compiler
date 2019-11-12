@@ -154,10 +154,18 @@ void Dispatcher_semantic_check::Dispatch(Function_call& z) {
             int cnt = 0;
             if(y->second.first) {
                 y->second.first->Accept(*this);
+                if(retval != Type::INT) {
+                    cerr << "Array index must be an integer";
+                    exit(0);
+                }
                 ++cnt;
             }
             if(y->second.second) {
                 y->second.second->Accept(*this);
+                if(retval != Type::INT) {
+                    cerr << "Array index must be an integer";
+                    exit(0);
+                }
                 ++cnt;
             }
             if(cnt != var_context.get_value(y->first).second) {
