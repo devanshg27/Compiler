@@ -110,7 +110,7 @@ void Dispatcher_visitor_test::Dispatch(Multivar_decl& z) {
 }
 void Dispatcher_visitor_test::Dispatch(Parameter_list& z) {
     cout << "Visited Parameter List\n";
-    for ( int i = 0; i < z.parameters.size(); ++i ) {
+    for ( int i = 0; i < (int)z.parameters.size(); ++i ) {
         z.parameters[i]->Accept(*this);
     }
 }

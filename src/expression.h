@@ -9,5 +9,5 @@ public:
     Expression();
     virtual void Accept(AbstractDispatcher& dispatcher) = 0;
     virtual std::pair<std::string,std::pair<Expression*,Expression*>>* getIdentifier() = 0;
-    ~Expression();
+    virtual ~Expression();
 };

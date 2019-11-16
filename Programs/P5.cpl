@@ -27,4 +27,5 @@ int main() {
 	read(n);
 	
 	print_combinations(1, n);
+	return 0;
 }

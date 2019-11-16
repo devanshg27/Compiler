@@ -1,3 +1,5 @@
+#pragma once
+
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -9,9 +11,10 @@ private:
 public: 
     Context();
     void add_context(pair<string, T>);
+    void add_context(string, T&&);
     int get_context_size();
     void resize_context(int);
-    T get_value(string s);
+    T& get_value(string s);
     ~Context();
 };
 
@@ -24,7 +27,12 @@ void Context<T>::add_context(pair<string, T> m) {
 }
 
 template <typename T>
-T Context<T>::get_value(string s) {
+void Context<T>::add_context(string s, T&& m) {
+    clist.push_front(make_pair(s, std::move(m)));
+}
+
+template <typename T>
+T& Context<T>::get_value(string s) {
     for(auto&z: clist) {
         if(s == z.first) {
             return z.second;
@@ -41,8 +49,8 @@ int Context<T>::get_context_size() {
 
 template <typename T>
 void Context<T>::resize_context(int sz) {
-    assert(clist.size() >= sz);
-    while(sz != clist.size()) {
+    assert((int)clist.size() >= sz);
+    while(sz != (int)clist.size()) {
         clist.pop_front();
     }
 }

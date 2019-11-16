@@ -9,7 +9,7 @@ class Statement {
 public:
     Statement();
     virtual void Accept(AbstractDispatcher& dispatcher) = 0;
-    ~Statement();
+    virtual ~Statement();
 };
 
 class Assignment_statement : public Statement {

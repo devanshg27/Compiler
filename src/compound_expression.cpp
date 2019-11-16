@@ -54,7 +54,7 @@ Binary_op::~Binary_op() {
     delete exp2;
 }
 
-Unary_op::Unary_op(std::string _op, Expression* _expr) : expr(_expr), op(_op){}
+Unary_op::Unary_op(std::string _op, Expression* _expr) : op(_op), expr(_expr) {}
 void Unary_op::Accept(AbstractDispatcher& dispatcher) {
     dispatcher.Dispatch(*this);
 }
@@ -65,7 +65,7 @@ Unary_op::~Unary_op() {
     delete expr;
 }
 
-Ternary_op::Ternary_op(Expression* _cond, Expression* _exp1, Expression* _exp2) : exp1(_exp1), cond(_cond), exp2(_exp2) {}
+Ternary_op::Ternary_op(Expression* _cond, Expression* _exp1, Expression* _exp2) : cond(_cond), exp1(_exp1), exp2(_exp2) {}
 void Ternary_op::Accept(AbstractDispatcher& dispatcher) {
     dispatcher.Dispatch(*this);
 }

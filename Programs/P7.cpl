@@ -36,7 +36,7 @@ void countSort(int n, int exp) {
 }
 
 void radixsort(int n) {
-	int m = getMax(arr, n);
+	int m = getMax(n);
 
 	for (int exp = 1; m/exp > 0; exp = exp * 10) {
 		countSort(n, exp);
@@ -60,4 +60,5 @@ int main() {
 	for(int i=0; i<n; i=i+1) {
 	print(arr[i], " ");
 	}
+	return 0;
 }

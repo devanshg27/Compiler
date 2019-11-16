@@ -4,9 +4,11 @@
 #include "dispatcher_pretty_print.h"
 #include "dispatcher_visitor_test.h"
 #include "dispatcher_semantic_check.h"
+#include "dispatcher_interpreter.h"
 using namespace std;
 #define YYDEBUG 1
 extern "C" int yylex();
+extern "C" FILE *yyin;
 extern int yyparse();
 extern int line_no;
 void yyerror(const char *s);
@@ -189,6 +191,9 @@ ifStatement: IF LPAREN Expression RPAREN Block elifStatementList {
 %%
 int main(int argc, char **argv) {
     // yydebug = 1;
+    if(argc == 2) {
+        yyin = fopen(argv[1], "r");
+    }
     yyparse();
     Dispatcher_semantic_check semantic_checker;
     root_node->Accept(semantic_checker);
@@ -196,6 +201,8 @@ int main(int argc, char **argv) {
     // Dispatcher_visitor_test visitor_test;
     root_node->Accept(pretty_printer);
     // root_node->Accept(visitor_test);
+    Dispatcher_interpreter interpreter;
+    root_node->Accept(interpreter);
 }
 
 void yyerror(const char *s) {

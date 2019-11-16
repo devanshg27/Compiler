@@ -30,7 +30,7 @@ BooleanLiteral::~BooleanLiteral() {}
 
 StringLiteral::StringLiteral(std::string _val) {
     val = "";
-    for(int i=0; i<_val.length(); ++i) {
+    for(int i=0; i<(int)_val.length(); ++i) {
         if(_val[i] != '\\') val += _val[i];
         else if(_val[i+1] == 'n') {
             val += '\n';

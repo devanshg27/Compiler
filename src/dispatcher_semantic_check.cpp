@@ -43,7 +43,7 @@ void Dispatcher_semantic_check::Dispatch(Assignment_statement& z) {
         ++cnt;
     }
     if(cnt != var_context.get_value(z.id).second) {
-        cerr << "Wrong number of dimensions for array";
+        cerr << "Wrong number of dimensions for array " << z.id << endl;
         exit(0);
     }
     z.expr->Accept(*this);
@@ -123,7 +123,7 @@ void Dispatcher_semantic_check::Dispatch(ExpressionIdentifier& z) {
         ++cnt;
     }
     if(cnt != var_context.get_value(z.id).second) {
-        cerr << "Wrong number of dimensions for array";
+        cerr << "Wrong number of dimensions for array " << z.id << endl;
         exit(0);
     }
     retval = var_context.get_value(z.id).first;
@@ -169,7 +169,7 @@ void Dispatcher_semantic_check::Dispatch(Function_call& z) {
                 ++cnt;
             }
             if(cnt != var_context.get_value(y->first).second) {
-                cerr << "Wrong number of dimensions for array";
+                cerr << "Wrong number of dimensions for array " << y->first << endl;
                 exit(0);
             }
             delete y;
@@ -255,6 +255,13 @@ void Dispatcher_semantic_check::Dispatch(Parameter_list& z) {
 void Dispatcher_semantic_check::Dispatch(Program& z) {
     z.v_list->Accept(*this);
     z.f_list->Accept(*this);
+    auto func_description = func_context.get_value("main");
+    vector<Type> temp;
+    if(temp != func_description.second or func_description.first != Type::INT) {
+        cerr << "main should be declared as int main().";
+        exit(0);
+    }
+    retval = func_description.first;
 }
 void Dispatcher_semantic_check::Dispatch(Return_statement& z) {
     if(z.expr) {
@@ -325,6 +332,13 @@ void Dispatcher_semantic_check::Dispatch(Var_decl& z) {
     }
     temp.second = {typeMap.at(z.type), cnt};
     var_context.add_context(temp);
+    if(z.initial_value) {
+        z.initial_value->Accept(*this);
+        if(retval != typeMap.at(z.type)) {
+            cerr << "RHS during Assignment must be of same type as variable";
+            exit(0);
+        }
+    }
 }
 void Dispatcher_semantic_check::Dispatch(Variable_list& z) {
     for(auto& y: z.decls) {

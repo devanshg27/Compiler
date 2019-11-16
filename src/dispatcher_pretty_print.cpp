@@ -4,7 +4,7 @@
 using namespace std;
 
 void Dispatcher_pretty_print::Dispatch(Argument_list& z) {
-    for ( int i = 0; i < z.arguments.size(); ++i ) {
+    for ( int i = 0; i < (int)z.arguments.size(); ++i ) {
         cout <<z.arguments[i]->type << " " << z.arguments[i]->id;
         if(z.arguments[i]->shapex) {
             cout<<"["<<*(z.arguments[i]->shapex)<<"]";
@@ -16,7 +16,7 @@ void Dispatcher_pretty_print::Dispatch(Argument_list& z) {
             cout<<" = ";
             z.arguments[i]->initial_value->Accept(*this);
         }
-        if(i != z.arguments.size() - 1) cout <<", ";
+        if(i != (int)z.arguments.size() - 1) cout <<", ";
     }
 }
 void Dispatcher_pretty_print::Dispatch(Assignment_statement& z) {
@@ -166,7 +166,7 @@ void Dispatcher_pretty_print::Dispatch(IntegerLiteral& z) {
 }
 void Dispatcher_pretty_print::Dispatch(Multivar_decl& z) {
     cout << z.decls[0]->type << " ";
-    for (int i = 0; i < z.decls.size(); ++i) {
+    for (int i = 0; i < (int)z.decls.size(); ++i) {
         cout << z.decls[i]->id;
         if(z.decls[i]->shapex) {
             cout<<"["<<*(z.decls[i]->shapex)<<"]";
@@ -178,13 +178,13 @@ void Dispatcher_pretty_print::Dispatch(Multivar_decl& z) {
             cout<<" = ";
             z.decls[i]->initial_value->Accept(*this);
         }
-        if(i != z.decls.size() - 1) cout <<", ";
+        if(i != (int)z.decls.size() - 1) cout <<", ";
     }
 }
 void Dispatcher_pretty_print::Dispatch(Parameter_list& z) {
-    for ( int i = 0; i < z.parameters.size(); ++i ) {
+    for ( int i = 0; i < (int)z.parameters.size(); ++i ) {
         z.parameters[i]->Accept(*this);
-        if(i != z.parameters.size() - 1) cout << ", ";
+        if(i != (int)z.parameters.size() - 1) cout << ", ";
     }
 }
 void Dispatcher_pretty_print::Dispatch(Program& z) {
@@ -212,7 +212,7 @@ void Dispatcher_pretty_print::Dispatch(Statement_list& z) {
 }
 void Dispatcher_pretty_print::Dispatch(StringLiteral& z) {
     cout<<'\"';
-    for(int i=1; i<z.val.length() - 1; ++i) {
+    for(int i=1; i<(int)z.val.length() - 1; ++i) {
         if(z.val[i] == '\n') {
             cout << "\\n";
         }

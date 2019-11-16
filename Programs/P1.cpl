@@ -14,13 +14,15 @@ int main () {
 	int k;
 	int ans = 0;
 
-	print("Enter the numbers n and k: ");
+	print("Enter the number n: ");
 	read(n);
+	print("Enter the number k: ");
 	read(k);
 
 	for(int i=1; i<=n; i=i+1) {
 		ans = ans + pow(i, k);
 	}
 
-	print(ans);
+	print(ans, "\n");
+	return 0;
 }

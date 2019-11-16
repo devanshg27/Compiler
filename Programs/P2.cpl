@@ -21,4 +21,5 @@ int main () {
 	else{
 		print("Composite.");
 	}
+	return 0;
 }

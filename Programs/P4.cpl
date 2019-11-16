@@ -12,12 +12,13 @@
 			c = m * m + n * n;
   
 			if (c <= 100000000) {
-				print(a, b, c);
+				print(a, " ", b, " ", c, "\n");
 				cnt = cnt + 1;
 			}
   
 		} 
 		m = m + 1;
 	}
-	print(cnt);
+	print(cnt, "\n");
+	return 0;
 }

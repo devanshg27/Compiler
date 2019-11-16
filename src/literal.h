@@ -8,7 +8,7 @@ class Literal {
 public:
     Literal();
     virtual void Accept(AbstractDispatcher& dispatcher) = 0;
-    ~Literal();
+    virtual ~Literal();
 };
 
 class CharacterLiteral : public Literal {
