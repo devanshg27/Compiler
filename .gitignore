@@ -4,6 +4,9 @@ cpl_parser
 # Ignore directory bin/
 bin/
 
+# Ignore vscode directory
+.vscode/
+
 # CMake files
 CMakeLists.txt.user
 CMakeCache.txt

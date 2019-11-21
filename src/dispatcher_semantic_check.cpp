@@ -3,6 +3,10 @@
 
 using namespace std;
 
+ostream& operator<<(ostream& s, const pair<string,vector<Type>>& p) {
+    return s << p.first;
+}
+
 const map<string,Type> typeMap = {
     {"int", Type::INT},
     {"char", Type::CHAR},
@@ -185,12 +189,8 @@ void Dispatcher_semantic_check::Dispatch(Function_call& z) {
         return;
     }
     else {
-        auto func_description = func_context.get_value(z.id);
-        if(temp != func_description.second) {
-            cerr << "Parameter and arguments don\'t match for "<< z.id <<" .";
-            exit(0);
-        }
-        retval = func_description.first;
+        auto func_description = func_context.get_value(make_pair(z.id, temp));
+        retval = func_description;
     }
 }
 void Dispatcher_semantic_check::Dispatch(Function_call_statement& z) {
@@ -198,9 +198,9 @@ void Dispatcher_semantic_check::Dispatch(Function_call_statement& z) {
 }
 void Dispatcher_semantic_check::Dispatch(Function_decl& z) {
     cur_func_return_type = typeMap.at(z.type);
-    
-    pair<string, pair<Type, vector<Type>>> temp;
-    temp.first = z.id;
+
+    pair<pair<string,vector<Type>>, Type> temp;
+    temp.first.first = z.id;
     if(z.id == "print") {
         cerr << "Can not have function with name print.";
         exit(0);
@@ -209,9 +209,9 @@ void Dispatcher_semantic_check::Dispatch(Function_decl& z) {
         cerr << "Can not have function with name read.";
         exit(0);
     }
-    temp.second.first = typeMap.at(z.type);
+    temp.second = typeMap.at(z.type);
     for(auto&y: z.a_list->arguments) {
-        temp.second.second.push_back(typeMap.at(y->type));
+        temp.first.second.push_back(typeMap.at(y->type));
     }
     func_context.add_context(temp);
 
@@ -255,13 +255,12 @@ void Dispatcher_semantic_check::Dispatch(Parameter_list& z) {
 void Dispatcher_semantic_check::Dispatch(Program& z) {
     z.v_list->Accept(*this);
     z.f_list->Accept(*this);
-    auto func_description = func_context.get_value("main");
-    vector<Type> temp;
-    if(temp != func_description.second or func_description.first != Type::INT) {
+    auto func_description = func_context.get_value(make_pair("main", vector<Type>()));
+    if(func_description != Type::INT) {
         cerr << "main should be declared as int main().";
         exit(0);
     }
-    retval = func_description.first;
+    retval = func_description;
 }
 void Dispatcher_semantic_check::Dispatch(Return_statement& z) {
     if(z.expr) {

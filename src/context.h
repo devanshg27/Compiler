@@ -4,35 +4,35 @@
 
 using namespace std;
 
-template <typename T> 
+template <typename U, typename T>
 class Context {
-private: 
-    list<pair<string, T>> clist;
-public: 
+private:
+    list<pair<U, T>> clist;
+public:
     Context();
-    void add_context(pair<string, T>);
-    void add_context(string, T&&);
+    void add_context(pair<U, T>);
+    void add_context(const U&, T&&);
     int get_context_size();
     void resize_context(int);
-    T& get_value(string s);
+    T& get_value(const U &s);
     ~Context();
 };
 
-template <typename T>
-Context<T>::Context() {}
+template <typename U, typename T>
+Context<U, T>::Context() {}
 
-template <typename T>
-void Context<T>::add_context(pair<string, T> m) {
+template <typename U, typename T>
+void Context<U, T>::add_context(pair<U, T> m) {
     clist.push_front(m);
 }
 
-template <typename T>
-void Context<T>::add_context(string s, T&& m) {
+template <typename U, typename T>
+void Context<U, T>::add_context(const U &s, T&& m) {
     clist.push_front(make_pair(s, std::move(m)));
 }
 
-template <typename T>
-T& Context<T>::get_value(string s) {
+template <typename U, typename T>
+T& Context<U, T>::get_value(const U &s) {
     for(auto&z: clist) {
         if(s == z.first) {
             return z.second;
@@ -42,18 +42,18 @@ T& Context<T>::get_value(string s) {
     exit(0);
 }
 
-template <typename T>
-int Context<T>::get_context_size() {
+template <typename U, typename T>
+int Context<U, T>::get_context_size() {
     return clist.size();
 }
 
-template <typename T>
-void Context<T>::resize_context(int sz) {
+template <typename U, typename T>
+void Context<U, T>::resize_context(int sz) {
     assert((int)clist.size() >= sz);
     while(sz != (int)clist.size()) {
         clist.pop_front();
     }
 }
 
-template <typename T>
-Context<T>::~Context() {}
+template <typename U, typename T>
+Context<U, T>::~Context() {}

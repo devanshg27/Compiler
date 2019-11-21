@@ -5,10 +5,12 @@
 
 enum class Type{ INT, UNSIGNED, BOOL, CHAR, VOID, STRING};
 
+ostream& operator<<(ostream& s, const pair<string,vector<Type>>& p);
+
 class Dispatcher_semantic_check : public AbstractDispatcher {
 private:
-    Context<pair<Type, int>> var_context;
-    Context<pair<Type, vector<Type>>> func_context;
+    Context<string, pair<Type, int>> var_context;
+    Context<pair<string,vector<Type>>, Type> func_context;
     Type retval;
     Type cur_func_return_type;
 public:

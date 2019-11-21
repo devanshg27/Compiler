@@ -2,10 +2,10 @@
 
 template <typename T>
 class Container {
-private: 
+private:
     std::unique_ptr<T[]> obj;
     int shapex, shapey;
-public: 
+public:
     Container();
     Container(int _shapex);
     Container(int _shapex, int _shapey);

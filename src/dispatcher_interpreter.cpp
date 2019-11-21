@@ -3,6 +3,10 @@
 
 using namespace std;
 
+ostream& operator<<(ostream& s, const pair<string,vector<int>>& p) {
+    return s << p.first;
+}
+
 const map<string,int> typeMap = {
     {"void", -1},
     {"int", 0},
@@ -246,29 +250,38 @@ void Dispatcher_interpreter::Dispatch(Function_call& z) {
         }
         return;
     }
-    Function_decl* fd = func_context.get_value(z.id);
-    int oldsz = var_context.get_context_size();
-    for(int i=0; i<(int)fd->a_list->arguments.size(); ++i) {
+
+    vector<ValueContainer> parametersVector;
+    vector<int> typeVector;
+
+    for(int i=0; i<(int)z.p_list->parameters.size(); ++i) {
         z.p_list->parameters[i]->Accept(*this);
 
+        typeVector.push_back(retval.index());
+        parametersVector.push_back(std::move(retval));
+    }
+
+    Function_decl* fd = func_context.get_value(make_pair(z.id, typeVector));
+    int oldsz = var_context.get_context_size();
+    for(int i=0; i<(int)fd->a_list->arguments.size(); ++i) {
         Var_decl* vd = fd->a_list->arguments[i];
 
         if(typeMap.at(vd->type) == -1) {assert(0);}
         if(typeMap.at(vd->type) == 0) {
             var_context.add_context(vd->id, std::move(Container<int>()));
-            std::get<0>(var_context.get_value(vd->id)).get_reference() = std::get<0>(retval).get_reference();
+            std::get<0>(var_context.get_value(vd->id)).get_reference() = std::get<0>(parametersVector[i]).get_reference();
         }
         if(typeMap.at(vd->type) == 1) {
             var_context.add_context(vd->id, std::move(Container<char>()));
-            std::get<1>(var_context.get_value(vd->id)).get_reference() = std::get<1>(retval).get_reference();
+            std::get<1>(var_context.get_value(vd->id)).get_reference() = std::get<1>(parametersVector[i]).get_reference();
         }
         if(typeMap.at(vd->type) == 2) {
             var_context.add_context(vd->id, std::move(Container<unsigned>()));
-            std::get<2>(var_context.get_value(vd->id)).get_reference() = std::get<2>(retval).get_reference();
+            std::get<2>(var_context.get_value(vd->id)).get_reference() = std::get<2>(parametersVector[i]).get_reference();
         }
         if(typeMap.at(vd->type) == 3) {
             var_context.add_context(vd->id, std::move(Container<bool>()));
-            std::get<3>(var_context.get_value(vd->id)).get_reference() = std::get<3>(retval).get_reference();
+            std::get<3>(var_context.get_value(vd->id)).get_reference() = std::get<3>(parametersVector[i]).get_reference();
         }
         if(typeMap.at(vd->type) == 4) {assert(0);}
     }
@@ -277,7 +290,7 @@ void Dispatcher_interpreter::Dispatch(Function_call& z) {
     if(!hasReturned and typeMap.at(fd->type) >= 0) {
         cerr << "Runtime error: No value returned from non-void function " << fd->id;
         exit(0);
-    } 
+    }
     hasReturned = false;
     var_context.resize_context(oldsz);
 }
@@ -285,7 +298,11 @@ void Dispatcher_interpreter::Dispatch(Function_call_statement& z) {
     z.fcall->Accept(*this);
 }
 void Dispatcher_interpreter::Dispatch(Function_decl& z) {
-    func_context.add_context({z.id, &z});
+    vector<int> temp;
+    for(auto&d: z.a_list->arguments) {
+        temp.push_back(typeMap.at(d->getType()));
+    }
+    func_context.add_context({make_pair(z.id, temp), &z});
 }
 void Dispatcher_interpreter::Dispatch(Function_list& z) {
     for(auto& y: z.decls) {
@@ -321,7 +338,7 @@ void Dispatcher_interpreter::Dispatch(Parameter_list& z) {
 void Dispatcher_interpreter::Dispatch(Program& z) {
     z.v_list->Accept(*this);
     z.f_list->Accept(*this);
-    Function_decl* fd = func_context.get_value("main");
+    Function_decl* fd = func_context.get_value(make_pair("main", vector<int>()));
     fd->blk->Accept(*this);
     if(!hasReturned and typeMap.at(fd->type) >= 0) {
         cerr << "Runtime error: Program ended without returning status code." << fd->id;

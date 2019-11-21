@@ -8,10 +8,12 @@
 
 using ValueContainer = std::variant<Container<int>, Container<char>, Container<unsigned>, Container<bool>, string>;
 
+ostream& operator<<(ostream& s, const pair<string,vector<int>>& p);
+
 class Dispatcher_interpreter : public AbstractDispatcher {
 private:
-    Context<ValueContainer> var_context;
-    Context<Function_decl*> func_context;
+    Context<string, ValueContainer> var_context;
+    Context<pair<string, vector<int>>, Function_decl*> func_context;
     bool hasReturned = false;
     ValueContainer retval;
     ValueContainer func_retval;
