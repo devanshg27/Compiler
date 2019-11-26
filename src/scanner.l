@@ -60,6 +60,7 @@ TRUE "true"
 FALSE "false"
 STR ([^\\"']|\\n|\\t|\\'|\\\\|\\\"|\\r)
 UNSIGNED_SUFFIX [uU]
+COMMENT "//"
 
 %%
 
@@ -123,6 +124,7 @@ UNSIGNED_SUFFIX [uU]
 }
 \"{STR}*\"               {yylval.str_value = strdup(yytext); return STRING_LITERAL; }
 
+{COMMENT}[^\n]*          {/*Comment*/}
 [ \t\v\r]+ 				 {/*whitespace*/}
 \n                       {++line_no; }
 %%
