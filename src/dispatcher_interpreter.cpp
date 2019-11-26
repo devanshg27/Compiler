@@ -263,27 +263,31 @@ void Dispatcher_interpreter::Dispatch(Function_call& z) {
 
     Function_decl* fd = func_context.get_value(make_pair(z.id, typeVector));
     int oldsz = var_context.get_context_size();
+    vector<pair<string, ValueContainer>> tempParameters;
     for(int i=0; i<(int)fd->a_list->arguments.size(); ++i) {
         Var_decl* vd = fd->a_list->arguments[i];
 
         if(typeMap.at(vd->type) == -1) {assert(0);}
         if(typeMap.at(vd->type) == 0) {
-            var_context.add_context(vd->id, std::move(Container<int>()));
-            std::get<0>(var_context.get_value(vd->id)).get_reference() = std::get<0>(parametersVector[i]).get_reference();
+            tempParameters.emplace_back(vd->id, std::move(Container<int>()));
+            std::get<0>(tempParameters.back().second).get_reference() = std::get<0>(parametersVector[i]).get_reference();
         }
         if(typeMap.at(vd->type) == 1) {
-            var_context.add_context(vd->id, std::move(Container<char>()));
-            std::get<1>(var_context.get_value(vd->id)).get_reference() = std::get<1>(parametersVector[i]).get_reference();
+            tempParameters.emplace_back(vd->id, std::move(Container<char>()));
+            std::get<1>(tempParameters.back().second).get_reference() = std::get<1>(parametersVector[i]).get_reference();
         }
         if(typeMap.at(vd->type) == 2) {
-            var_context.add_context(vd->id, std::move(Container<unsigned>()));
-            std::get<2>(var_context.get_value(vd->id)).get_reference() = std::get<2>(parametersVector[i]).get_reference();
+            tempParameters.emplace_back(vd->id, std::move(Container<unsigned>()));
+            std::get<2>(tempParameters.back().second).get_reference() = std::get<2>(parametersVector[i]).get_reference();
         }
         if(typeMap.at(vd->type) == 3) {
-            var_context.add_context(vd->id, std::move(Container<bool>()));
-            std::get<3>(var_context.get_value(vd->id)).get_reference() = std::get<3>(parametersVector[i]).get_reference();
+            tempParameters.emplace_back(vd->id, std::move(Container<bool>()));
+            std::get<3>(tempParameters.back().second).get_reference() = std::get<3>(parametersVector[i]).get_reference();
         }
         if(typeMap.at(vd->type) == 4) {assert(0);}
+    }
+    for(auto&tempp: tempParameters) {
+        var_context.add_context(tempp.first, std::move(tempp.second));
     }
     fd->blk->Accept(*this);
     swap(func_retval, retval);
@@ -341,20 +345,20 @@ void Dispatcher_interpreter::Dispatch(Program& z) {
     Function_decl* fd = func_context.get_value(make_pair("main", vector<int>()));
     fd->blk->Accept(*this);
     if(!hasReturned and typeMap.at(fd->type) >= 0) {
-        cerr << "Runtime error: Program ended without returning status code." << fd->id;
+        cerr << "Runtime error: Program ended without returning status code." << fd->id << endl;
         exit(0);
     }
     else {
-        cout << "Program ended with status code " << std::get<0>(func_retval).get_reference() << ".";
+        cout << "Program ended with status code " << std::get<0>(func_retval).get_reference() << "." << endl;
     }
     hasReturned = false;
 }
 void Dispatcher_interpreter::Dispatch(Return_statement& z) {
-    hasReturned = true;
     if(z.expr) {
         z.expr->Accept(*this);
         swap(retval, func_retval);
     }
+    hasReturned = true;
 }
 void Dispatcher_interpreter::Dispatch(Statement_list& z) {
     if(hasReturned) return;
@@ -383,10 +387,10 @@ void Dispatcher_interpreter::Dispatch(Unary_op& z) {
     }
     if(z.op == "+" or z.op == "-") {
         if(retval.index() == 0) {
-            if(z.op == "-") std::get<0>(retval).get_reference() = ! std::get<0>(retval).get_reference();
+            if(z.op == "-") std::get<0>(retval).get_reference() = - std::get<0>(retval).get_reference();
         }
         if(retval.index() == 2) {
-            if(z.op == "-") std::get<2>(retval).get_reference() = ! std::get<2>(retval).get_reference();
+            if(z.op == "-") std::get<2>(retval).get_reference() = - std::get<2>(retval).get_reference();
         }
     }
 }

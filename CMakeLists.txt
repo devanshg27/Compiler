@@ -24,8 +24,11 @@ enable_cxx_compiler_flag_if_supported("-pedantic")
 
 find_package(FLEX REQUIRED)
 find_package(BISON REQUIRED)
+find_package(LLVM REQUIRED)
 
 include_directories(src)
+include_directories( ${LLVM_INCLUDE_DIRS} )
+link_directories( ${LLVM_LIBRARY_DIRS} )
 
 file(GLOB SOURCES
     "src/*.h"
@@ -42,4 +45,7 @@ add_executable(cpl_parser
     ${FLEX_lexer_OUTPUTS}
     ${BISON_parser_OUTPUTS}
     ${SOURCES})
-target_link_libraries(cpl_parser ${FLEX_LIBRARIES})
+
+llvm_map_components_to_libnames(REQ_LLVM_LIBRARIES native)
+
+target_link_libraries(cpl_parser ${FLEX_LIBRARIES} ${REQ_LLVM_LIBRARIES})
