@@ -89,7 +89,10 @@ void Dispatcher_semantic_check::Dispatch(Binary_op& z) {
 }
 void Dispatcher_semantic_check::Dispatch(Block& z) {
     int oldsz = var_context.get_context_size();
+    bool _checkReturn = checkReturn;
+    checkReturn = false;
     z.v_list->Accept(*this);
+    checkReturn = _checkReturn;
     z.s_list->Accept(*this);
     var_context.resize_context(oldsz);
 }
@@ -178,6 +181,7 @@ void Dispatcher_semantic_check::Dispatch(Function_call& z) {
             }
             delete y;
         }
+        retval = Type::VOID;
         return;
     }
     vector<Type> temp;
@@ -186,6 +190,7 @@ void Dispatcher_semantic_check::Dispatch(Function_call& z) {
         temp.push_back(retval);
     }
     if(z.id == "print") {
+        retval = Type::VOID;
         return;
     }
     else {
@@ -217,11 +222,18 @@ void Dispatcher_semantic_check::Dispatch(Function_decl& z) {
 
     int oldsz = var_context.get_context_size();
     z.a_list->Accept(*this);
+    checkReturn = true;
     z.blk->Accept(*this);
     var_context.resize_context(oldsz);
 }
 void Dispatcher_semantic_check::Dispatch(Function_list& z) {
+    set<string> fids;
     for(auto& y: z.decls) {
+        if(fids.find(y->id) != fids.end()) {
+            cerr << "Function name collision." << endl;
+            exit(0);
+        }
+        fids.insert(y->id);
         y->Accept(*this);
     }
 }
@@ -253,7 +265,9 @@ void Dispatcher_semantic_check::Dispatch(Parameter_list& z) {
     assert(0);
 }
 void Dispatcher_semantic_check::Dispatch(Program& z) {
+    isGlobal = true;
     z.v_list->Accept(*this);
+    isGlobal = false;
     z.f_list->Accept(*this);
     auto func_description = func_context.get_value(make_pair("main", vector<Type>()));
     if(func_description != Type::INT) {
@@ -278,8 +292,17 @@ void Dispatcher_semantic_check::Dispatch(Return_statement& z) {
     }
 }
 void Dispatcher_semantic_check::Dispatch(Statement_list& z) {
+    bool _checkReturn = checkReturn, hasReturn = false;
+    checkReturn = false;
     for(auto&y: z.statements) {
         y->Accept(*this);
+        if(dynamic_cast<Return_statement*>(y)) {
+            hasReturn = true;
+        }
+    }
+    if(_checkReturn and !hasReturn) {
+        cerr << "No return statement in function.";
+        exit(0);
     }
 }
 void Dispatcher_semantic_check::Dispatch(StringLiteral& z) {
@@ -327,6 +350,14 @@ void Dispatcher_semantic_check::Dispatch(Var_decl& z) {
     temp.first = z.id;
     if(z.type == "void") {
         cerr << "Variables can't be of type void.";
+        exit(0);
+    }
+    if(cnt and !isGlobal) {
+        cerr << "Arrays only allowed as global variable.";
+        exit(0);
+    }
+    if(isGlobal and z.initial_value) {
+        cerr << "Global variables can't be initialized, they are zero initialized by default.";
         exit(0);
     }
     temp.second = {typeMap.at(z.type), cnt};
