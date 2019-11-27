@@ -14,7 +14,7 @@ private:
     Type retval;
     Type cur_func_return_type;
     bool isGlobal;
-    bool checkReturn;
+    bool hasReturn;
 public:
     // Declare overloads for each kind of node to dispatch
     void Dispatch(Argument_list&);

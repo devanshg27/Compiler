@@ -89,10 +89,7 @@ void Dispatcher_semantic_check::Dispatch(Binary_op& z) {
 }
 void Dispatcher_semantic_check::Dispatch(Block& z) {
     int oldsz = var_context.get_context_size();
-    bool _checkReturn = checkReturn;
-    checkReturn = false;
     z.v_list->Accept(*this);
-    checkReturn = _checkReturn;
     z.s_list->Accept(*this);
     var_context.resize_context(oldsz);
 }
@@ -149,6 +146,7 @@ void Dispatcher_semantic_check::Dispatch(For_statement& z) {
     if(z.upd) z.upd->Accept(*this);
     z.block->Accept(*this);
     var_context.resize_context(oldsz);
+    hasReturn = false;
 }
 void Dispatcher_semantic_check::Dispatch(Function_call& z) {
     if(z.id == "read") {
@@ -222,8 +220,11 @@ void Dispatcher_semantic_check::Dispatch(Function_decl& z) {
 
     int oldsz = var_context.get_context_size();
     z.a_list->Accept(*this);
-    checkReturn = true;
     z.blk->Accept(*this);
+    if(cur_func_return_type != Type::VOID and !hasReturn) {
+        cout << "Non-void function " << z.id << " doesn't return a value.\n";
+    }
+    hasReturn = false;
     var_context.resize_context(oldsz);
 }
 void Dispatcher_semantic_check::Dispatch(Function_list& z) {
@@ -245,8 +246,11 @@ void Dispatcher_semantic_check::Dispatch(If_statement& z) {
             exit(0);
         }
         z.block->Accept(*this);
+        bool if_return = hasReturn;
+        hasReturn = false;
         if(z.else_statement) {
             z.else_statement->Accept(*this);
+            hasReturn = (hasReturn and if_return);
         }
     }
     else {
@@ -290,19 +294,11 @@ void Dispatcher_semantic_check::Dispatch(Return_statement& z) {
             exit(0);
         }
     }
+    hasReturn = true;
 }
 void Dispatcher_semantic_check::Dispatch(Statement_list& z) {
-    bool _checkReturn = checkReturn, hasReturn = false;
-    checkReturn = false;
     for(auto&y: z.statements) {
         y->Accept(*this);
-        if(dynamic_cast<Return_statement*>(y)) {
-            hasReturn = true;
-        }
-    }
-    if(_checkReturn and !hasReturn) {
-        cerr << "No return statement in function.";
-        exit(0);
     }
 }
 void Dispatcher_semantic_check::Dispatch(StringLiteral& z) {
@@ -382,4 +378,5 @@ void Dispatcher_semantic_check::Dispatch(While_statement& z) {
         exit(0);
     }
     z.block->Accept(*this);
+    hasReturn = false;
 }

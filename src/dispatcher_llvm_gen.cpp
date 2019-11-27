@@ -486,7 +486,12 @@ void Dispatcher_llvm_gen::Dispatch(Function_decl& z) {
     }
 
     z.blk->Accept(*this);
-    assert(hasReturn);
+    if(typeMap.at(z.type) != -1) {
+        assert(hasReturn);
+    }
+    else if(!hasReturn) {
+        builder->CreateRetVoid();
+    }
     hasReturn = false;
     if(!ret) {
         func->eraseFromParent();
