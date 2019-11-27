@@ -354,7 +354,7 @@ void Dispatcher_llvm_gen::Dispatch(Function_call& z) {
             }
             if(cnt==2) {
                 assert(pos_x);
-                llvm::Value* sz1 = llvm::ConstantInt::get(the_context, llvm::APInt(_cpl_int_width, arr_sz.get_value(z.id)));
+                llvm::Value* sz1 = llvm::ConstantInt::get(the_context, llvm::APInt(_cpl_int_width, arr_sz.get_value(y->first)));
                 llvm::Value* index = builder->CreateMul(sz1, pos_x, "mul_tmp");
                 assert(index);
                 index = builder->CreateAdd(pos_y, index, "add_tmp");
