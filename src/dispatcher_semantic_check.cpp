@@ -96,10 +96,10 @@ void Dispatcher_semantic_check::Dispatch(Block& z) {
 void Dispatcher_semantic_check::Dispatch(BlockStatement& z) {
     z.block->Accept(*this);
 }
-void Dispatcher_semantic_check::Dispatch(BooleanLiteral& z) {
+void Dispatcher_semantic_check::Dispatch(BooleanLiteral&) {
     retval = Type::BOOL;
 }
-void Dispatcher_semantic_check::Dispatch(CharacterLiteral& z) {
+void Dispatcher_semantic_check::Dispatch(CharacterLiteral&) {
     retval = Type::CHAR;
 }
 void Dispatcher_semantic_check::Dispatch(ExpressionBracketed& z) {
@@ -258,7 +258,7 @@ void Dispatcher_semantic_check::Dispatch(If_statement& z) {
         z.block->Accept(*this);
     }
 }
-void Dispatcher_semantic_check::Dispatch(IntegerLiteral& z) {
+void Dispatcher_semantic_check::Dispatch(IntegerLiteral&) {
     retval = Type::INT;
 }
 void Dispatcher_semantic_check::Dispatch(Multivar_decl& z) {
@@ -266,7 +266,7 @@ void Dispatcher_semantic_check::Dispatch(Multivar_decl& z) {
         y->Accept(*this);
     }
 }
-void Dispatcher_semantic_check::Dispatch(Parameter_list& z) {
+void Dispatcher_semantic_check::Dispatch(Parameter_list&) {
     assert(0);
 }
 void Dispatcher_semantic_check::Dispatch(Program& z) {
@@ -302,7 +302,7 @@ void Dispatcher_semantic_check::Dispatch(Statement_list& z) {
         y->Accept(*this);
     }
 }
-void Dispatcher_semantic_check::Dispatch(StringLiteral& z) {
+void Dispatcher_semantic_check::Dispatch(StringLiteral&) {
     retval = Type::STRING;
 }
 void Dispatcher_semantic_check::Dispatch(Ternary_op& z) {
@@ -336,7 +336,7 @@ void Dispatcher_semantic_check::Dispatch(Unary_op& z) {
         }
     }
 }
-void Dispatcher_semantic_check::Dispatch(UnsignedLiteral& z) {
+void Dispatcher_semantic_check::Dispatch(UnsignedLiteral&) {
     retval = Type::UNSIGNED;
 }
 void Dispatcher_semantic_check::Dispatch(Var_decl& z) {

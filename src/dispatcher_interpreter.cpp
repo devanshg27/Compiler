@@ -336,7 +336,7 @@ void Dispatcher_interpreter::Dispatch(Multivar_decl& z) {
         y->Accept(*this);
     }
 }
-void Dispatcher_interpreter::Dispatch(Parameter_list& z) {
+void Dispatcher_interpreter::Dispatch(Parameter_list&) {
     assert(0);
 }
 void Dispatcher_interpreter::Dispatch(Program& z) {

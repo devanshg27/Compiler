@@ -251,7 +251,7 @@ void Dispatcher_pretty_print::Dispatch(Unary_op& z) {
 void Dispatcher_pretty_print::Dispatch(UnsignedLiteral& z) {
     cout << z.val << "u";
 }
-void Dispatcher_pretty_print::Dispatch(Var_decl& z) {
+void Dispatcher_pretty_print::Dispatch(Var_decl&) {
     assert(0);
 }
 void Dispatcher_pretty_print::Dispatch(Variable_list& z) {

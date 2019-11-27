@@ -9,6 +9,8 @@ extern union node yylval;
 int line_no = 1;
 %}
 
+%option nounput
+
 COMMA ","
 SEMICOLON ";"
 QMARK "?"

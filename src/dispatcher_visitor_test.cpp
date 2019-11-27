@@ -33,10 +33,10 @@ void Dispatcher_visitor_test::Dispatch(BlockStatement& z) {
     cout << "Visited Block Statement\n";
     z.block->Accept(*this);
 }
-void Dispatcher_visitor_test::Dispatch(BooleanLiteral& z) {
+void Dispatcher_visitor_test::Dispatch(BooleanLiteral&) {
     cout << "Visited Boolean literal\n";
 }
-void Dispatcher_visitor_test::Dispatch(CharacterLiteral& z) {
+void Dispatcher_visitor_test::Dispatch(CharacterLiteral&) {
     cout << "Visited Character Literal\n";
 }
 void Dispatcher_visitor_test::Dispatch(ExpressionBracketed& z) {
@@ -99,7 +99,7 @@ void Dispatcher_visitor_test::Dispatch(If_statement& z) {
         z.block->Accept(*this);
     }
 }
-void Dispatcher_visitor_test::Dispatch(IntegerLiteral& z) {
+void Dispatcher_visitor_test::Dispatch(IntegerLiteral&) {
     cout << "Visited Integer Literal\n";
 }
 void Dispatcher_visitor_test::Dispatch(Multivar_decl& z) {
@@ -131,7 +131,7 @@ void Dispatcher_visitor_test::Dispatch(Statement_list& z) {
         y->Accept(*this);
     }
 }
-void Dispatcher_visitor_test::Dispatch(StringLiteral& z) {
+void Dispatcher_visitor_test::Dispatch(StringLiteral&) {
     cout << "Visited String Literal\n";
 }
 void Dispatcher_visitor_test::Dispatch(Ternary_op& z) {
@@ -144,10 +144,10 @@ void Dispatcher_visitor_test::Dispatch(Unary_op& z) {
     cout << "Visited unary operation\n";
     z.expr->Accept(*this);
 }
-void Dispatcher_visitor_test::Dispatch(UnsignedLiteral& z) {
+void Dispatcher_visitor_test::Dispatch(UnsignedLiteral&) {
     cout << "Visited unsigned literal\n";
 }
-void Dispatcher_visitor_test::Dispatch(Var_decl& z) {
+void Dispatcher_visitor_test::Dispatch(Var_decl&) {
     cout << "Visited Variable declaration\n";
 }
 void Dispatcher_visitor_test::Dispatch(Variable_list& z) {

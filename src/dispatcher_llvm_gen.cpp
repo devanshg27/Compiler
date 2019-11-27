@@ -43,7 +43,7 @@ llvm::AllocaInst* Dispatcher_llvm_gen::create_entry_alloc(llvm::Function *func, 
     return alloca_instruction;
 }
 
-void Dispatcher_llvm_gen::Dispatch(Argument_list& z) {
+void Dispatcher_llvm_gen::Dispatch(Argument_list&) {
     assert(0);
 }
 void Dispatcher_llvm_gen::Dispatch(Assignment_statement& z) {
@@ -439,7 +439,7 @@ void Dispatcher_llvm_gen::Dispatch(Function_call_statement& z) {
 void Dispatcher_llvm_gen::Dispatch(Function_decl& z) {
     func_type.add_context({z.id, typeMap.at(z.type)});
     vector<llvm::Type*> method_args;
-    for(int i = 0; i < z.a_list->arguments.size(); ++i) {
+    for(int i = 0; i < (int)z.a_list->arguments.size(); ++i) {
         int arg_typ = typeMap.at(z.a_list->arguments[i]->type);
         string arg_name = z.a_list->arguments[i]->id;
         if(arg_typ == 0)
@@ -575,7 +575,7 @@ void Dispatcher_llvm_gen::Dispatch(Multivar_decl& z) {
         if(!ret) return;
     }
 }
-void Dispatcher_llvm_gen::Dispatch(Parameter_list& z) {
+void Dispatcher_llvm_gen::Dispatch(Parameter_list&) {
     assert(0);
 }
 void Dispatcher_llvm_gen::Dispatch(Program& z) {
