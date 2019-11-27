@@ -222,7 +222,8 @@ void Dispatcher_semantic_check::Dispatch(Function_decl& z) {
     z.a_list->Accept(*this);
     z.blk->Accept(*this);
     if(cur_func_return_type != Type::VOID and !hasReturn) {
-        cout << "Non-void function " << z.id << " doesn't return a value.\n";
+        cerr << "Non-void function " << z.id << " doesn't return a value.\n";
+        exit(0);
     }
     hasReturn = false;
     var_context.resize_context(oldsz);
