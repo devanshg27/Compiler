@@ -429,8 +429,9 @@ void Dispatcher_llvm_gen::Dispatch(Function_call& z) {
         argsv.push_back(ret);
         types.push_back(curType);
     }
-    ret = builder->CreateCall(calleef, argsv, "cal_tmp");
     curType = func_type.get_value(z.id);
+    if(curType == -1) ret = builder->CreateCall(calleef, argsv);
+    else ret = builder->CreateCall(calleef, argsv, "cal_tmp");
 }
 void Dispatcher_llvm_gen::Dispatch(Function_call_statement& z) {
     z.fcall->Accept(*this);
