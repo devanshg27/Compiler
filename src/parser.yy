@@ -5,6 +5,7 @@
 #include "dispatcher_visitor_test.h"
 #include "dispatcher_semantic_check.h"
 #include "dispatcher_interpreter.h"
+#include "dispatcher_llvm_gen.h"
 using namespace std;
 #define YYDEBUG 1
 extern "C" int yylex();
@@ -191,18 +192,37 @@ ifStatement: IF LPAREN Expression RPAREN Block elifStatementList {
 %%
 int main(int argc, char **argv) {
     // yydebug = 1;
-    if(argc == 2) {
+    if(argc == 1 or (argc == 2 and strcmp(argv[1], "--help")==0)) {
+        cout << "Usage:\n";
+        cout << "./cpl_parser / ./cpl_parser --help: Displays this help and exit\n";
+        cout << "./cpl_parser <input_program_filename>: Interprets the program\n";
+        cout << "./cpl_parser <input_program_filename> --stdout: Compiles the program to LLVM bytecode and prints the result to stdout\n";
+        cout << "./cpl_parser <input_program_filename> <output_filename>: Compiles the program to LLVM bytecode and stores it in the output file\n";
+        exit(0);
+    }
+    if(argc >= 2) {
         yyin = fopen(argv[1], "r");
     }
     yyparse();
     Dispatcher_semantic_check semantic_checker;
     root_node->Accept(semantic_checker);
-    Dispatcher_pretty_print pretty_printer;
     // Dispatcher_visitor_test visitor_test;
-    root_node->Accept(pretty_printer);
     // root_node->Accept(visitor_test);
+    Dispatcher_pretty_print pretty_printer;
+    root_node->Accept(pretty_printer);
     Dispatcher_interpreter interpreter;
-    root_node->Accept(interpreter);
+    if(argc == 2) root_node->Accept(interpreter);
+    Dispatcher_llvm_gen llvm_generator;
+    root_node->Accept(llvm_generator);
+    if(argc == 3) {
+        if(llvm_generator.ret) {
+            if(strcmp(argv[2], "--stdout")) llvm_generator.codeout(argv[2]);
+            else llvm_generator.codeout();
+        }
+        else {
+            cerr << "LLVM could not be generated.";
+        }
+    }
 }
 
 void yyerror(const char *s) {
