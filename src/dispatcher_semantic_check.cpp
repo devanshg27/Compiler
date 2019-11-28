@@ -414,7 +414,6 @@ void Dispatcher_semantic_check::Dispatch(Var_decl& z) {
         exit(0);
     }
     temp.second = {typeMap.at(z.type), cnt};
-    var_context.add_context(temp);
     if(z.initial_value) {
         z.initial_value->Accept(*this);
         if(retval != typeMap.at(z.type)) {
@@ -422,6 +421,7 @@ void Dispatcher_semantic_check::Dispatch(Var_decl& z) {
             exit(0);
         }
     }
+    var_context.add_context(temp);
 }
 void Dispatcher_semantic_check::Dispatch(Variable_list& z) {
     for(auto& y: z.decls) {

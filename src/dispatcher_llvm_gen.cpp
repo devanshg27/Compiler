@@ -470,7 +470,7 @@ void Dispatcher_llvm_gen::Dispatch(Function_decl& z) {
             method_args.emplace_back(llvm::Type::getInt32Ty(the_context));
         else if(arg_typ == 1)
             method_args.emplace_back(llvm::Type::getInt8Ty(the_context));
-        else if(arg_typ == 3)
+        else if(arg_typ == 2)
             method_args.emplace_back(llvm::Type::getInt32Ty(the_context));
         else if(arg_typ == 3)
             method_args.emplace_back(llvm::Type::getInt1Ty(the_context));
@@ -768,12 +768,13 @@ void Dispatcher_llvm_gen::Dispatch(Var_decl& z) {
 
         builder->CreateStore(init, alloc);
 
-        named_values.add_context(make_pair(z.id, alloc));
-
         if(z.initial_value) {
             z.initial_value->Accept(*this);
             ret = builder->CreateStore(ret, alloc);
         }
+
+        named_values.add_context(make_pair(z.id, alloc));
+
 
         ret = llvm::ConstantInt::get(the_context, llvm::APInt(_cpl_int_width, _cpl_success));
     }

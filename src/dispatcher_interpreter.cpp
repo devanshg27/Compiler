@@ -476,38 +476,46 @@ void Dispatcher_interpreter::Dispatch(Var_decl& z) {
 
     if(typeMap.at(z.type) == -1) {assert(0);}
     if(typeMap.at(z.type) == 0) {
+        if(z.initial_value) {
+            z.initial_value->Accept(*this);
+        }
         if(cnt==0) var_context.add_context(z.id, std::move(Container<int>()));
         if(cnt==1) var_context.add_context(z.id, std::move(Container<int>(*z.shapex)));
         if(cnt==2) var_context.add_context(z.id, std::move(Container<int>(*z.shapex, *z.shapey)));
         if(z.initial_value) {
-            z.initial_value->Accept(*this);
             if(cnt==0) std::get<0>(var_context.get_value(z.id)).get_reference() = std::get<0>(retval).get_reference();
         }
     }
     if(typeMap.at(z.type) == 1) {
+        if(z.initial_value) {
+            z.initial_value->Accept(*this);
+        }
         if(cnt==0) var_context.add_context(z.id, std::move(Container<char>()));
         if(cnt==1) var_context.add_context(z.id, std::move(Container<char>(*z.shapex)));
         if(cnt==2) var_context.add_context(z.id, std::move(Container<char>(*z.shapex, *z.shapey)));
         if(z.initial_value) {
-            z.initial_value->Accept(*this);
             if(cnt==0) std::get<1>(var_context.get_value(z.id)).get_reference() = std::get<1>(retval).get_reference();
         }
     }
     if(typeMap.at(z.type) == 2) {
+        if(z.initial_value) {
+            z.initial_value->Accept(*this);
+        }
         if(cnt==0) var_context.add_context(z.id, std::move(Container<unsigned>()));
         if(cnt==1) var_context.add_context(z.id, std::move(Container<unsigned>(*z.shapex)));
         if(cnt==2) var_context.add_context(z.id, std::move(Container<unsigned>(*z.shapex, *z.shapey)));
         if(z.initial_value) {
-            z.initial_value->Accept(*this);
             if(cnt==0) std::get<2>(var_context.get_value(z.id)).get_reference() = std::get<2>(retval).get_reference();
         }
     }
     if(typeMap.at(z.type) == 3) {
+        if(z.initial_value) {
+            z.initial_value->Accept(*this);
+        }
         if(cnt==0) var_context.add_context(z.id, std::move(Container<bool>()));
         if(cnt==1) var_context.add_context(z.id, std::move(Container<bool>(*z.shapex)));
         if(cnt==2) var_context.add_context(z.id, std::move(Container<bool>(*z.shapex, *z.shapey)));
         if(z.initial_value) {
-            z.initial_value->Accept(*this);
             if(cnt==0) std::get<3>(var_context.get_value(z.id)).get_reference() = std::get<3>(retval).get_reference();
         }
     }
