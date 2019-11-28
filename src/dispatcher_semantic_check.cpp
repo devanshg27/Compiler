@@ -177,6 +177,10 @@ void Dispatcher_semantic_check::Dispatch(Function_call& z) {
                 cerr << "Wrong number of dimensions for array " << y->first << endl;
                 exit(0);
             }
+            if(var_context.get_value(y->first).first == Type::BOOL) {
+                cerr << "Can't read boolean values.";
+                exit(0);
+            }
             delete y;
         }
         retval = Type::VOID;
@@ -187,8 +191,44 @@ void Dispatcher_semantic_check::Dispatch(Function_call& z) {
         p->Accept(*this);
         temp.push_back(retval);
     }
+    if(z.id == "int") {
+        if(temp.size() != 1 or temp[0] == Type::VOID or temp[0] == Type::STRING) {
+            cout << "can't convert parameter to int.";
+        }
+        retval = Type::INT;
+        return;
+    }
+    if(z.id == "char") {
+        if(temp.size() != 1 or temp[0] != Type::INT) {
+            cout << "can't convert parameter to char.";
+        }
+        retval = Type::CHAR;
+        return;
+    }
+    if(z.id == "unsigned") {
+        if(temp.size() != 1 or temp[0] != Type::INT) {
+            cout << "can't convert parameter to unsigned.";
+        }
+        retval = Type::UNSIGNED;
+        return;
+    }
+    if(z.id == "bool") {
+        if(temp.size() != 1 or temp[0] != Type::INT) {
+            cout << "can't convert parameter to bool.";
+        }
+        retval = Type::BOOL;
+        return;
+    }
     if(z.id == "print") {
         retval = Type::VOID;
+        if(std::find(temp.begin(), temp.end(), Type::VOID) != temp.end()) {
+            cerr << "Can't print void value.";
+            exit(0);
+        }
+        if(std::find(temp.begin(), temp.end(), Type::BOOL) != temp.end()) {
+            cerr << "Can't print boolean value.";
+            exit(0);
+        }
         return;
     }
     else {
@@ -210,6 +250,22 @@ void Dispatcher_semantic_check::Dispatch(Function_decl& z) {
     }
     else if(z.id == "read") {
         cerr << "Can not have function with name read.";
+        exit(0);
+    }
+    else if(z.id == "int") {
+        cerr << "Can not have function with name int.";
+        exit(0);
+    }
+    else if(z.id == "char") {
+        cerr << "Can not have function with name char.";
+        exit(0);
+    }
+    else if(z.id == "unsigned") {
+        cerr << "Can not have function with name unsigned.";
+        exit(0);
+    }
+    else if(z.id == "bool") {
+        cerr << "Can not have function with name bool.";
         exit(0);
     }
     temp.second = typeMap.at(z.type);

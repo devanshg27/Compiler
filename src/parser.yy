@@ -136,9 +136,8 @@ Expression: Literal             { $$ = new ExpressionLiteral($1); }
 | IDENTIFIER LSQUARE Expression RSQUARE { $$ = new ExpressionIdentifier(string($1), $3); }
 | IDENTIFIER LSQUARE Expression RSQUARE LSQUARE Expression RSQUARE { $$ = new ExpressionIdentifier(string($1), $3, $6); }
 
-FunctionCall: IDENTIFIER LPAREN ParameterList RPAREN {
-    $$ = new Function_call($1, $3);
-}
+FunctionCall: IDENTIFIER LPAREN ParameterList RPAREN { $$ = new Function_call($1, $3); }
+| Datatype LPAREN ParameterList RPAREN { $$ = new Function_call($1, $3); }
 
 ParameterList: /*nothing*/              { $$ = new Parameter_list(); }
 | Expression                            { $$ = new Parameter_list(); $$->add_parameter($1); }

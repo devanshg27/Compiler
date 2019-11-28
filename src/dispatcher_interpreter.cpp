@@ -250,6 +250,77 @@ void Dispatcher_interpreter::Dispatch(Function_call& z) {
         }
         return;
     }
+    if(z.id == "int") {
+        for(auto&p: z.p_list->parameters) {
+            p->Accept(*this);
+        }
+        if(retval.index() == 0) {
+            ValueContainer retval2 = Container<int>();
+            std::get<0>(retval2).get_reference() = int(std::get<0>(retval).get_reference());
+            swap(retval, retval2);
+        }
+        else if(retval.index() == 1) {
+            ValueContainer retval2 = Container<int>();
+            std::get<0>(retval2).get_reference() = int(std::get<1>(retval).get_reference());
+            swap(retval, retval2);
+        }
+        else if(retval.index() == 2) {
+            ValueContainer retval2 = Container<int>();
+            std::get<0>(retval2).get_reference() = int(std::get<2>(retval).get_reference());
+            swap(retval, retval2);
+        }
+        else if(retval.index() == 3) {
+            ValueContainer retval2 = Container<int>();
+            std::get<0>(retval2).get_reference() = int(std::get<3>(retval).get_reference());
+            swap(retval, retval2);
+        }
+        else {
+            assert(0);
+        }
+        return;
+    }
+    if(z.id == "char") {
+        for(auto&p: z.p_list->parameters) {
+            p->Accept(*this);
+        }
+        if(retval.index() == 0) {
+            ValueContainer retval2 = Container<char>();
+            std::get<1>(retval2).get_reference() = char(std::get<0>(retval).get_reference());
+            swap(retval2, retval);
+        }
+        else {
+            assert(0);
+        }
+        return;
+    }
+    if(z.id == "unsigned") {
+        for(auto&p: z.p_list->parameters) {
+            p->Accept(*this);
+        }
+        if(retval.index() == 0) {
+            ValueContainer retval2 = Container<unsigned>();
+            std::get<2>(retval2).get_reference() = (unsigned)(std::get<0>(retval).get_reference());
+            swap(retval2, retval);
+        }
+        else {
+            assert(0);
+        }
+        return;
+    }
+    if(z.id == "bool") {
+        for(auto&p: z.p_list->parameters) {
+            p->Accept(*this);
+        }
+        if(retval.index() == 0) {
+            ValueContainer retval2 = Container<bool>();
+            std::get<3>(retval2).get_reference() = (bool)(std::get<0>(retval).get_reference() != 0);
+            swap(retval2, retval);
+        }
+        else {
+            assert(0);
+        }
+        return;
+    }
 
     vector<ValueContainer> parametersVector;
     vector<int> typeVector;

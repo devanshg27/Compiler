@@ -416,6 +416,30 @@ void Dispatcher_llvm_gen::Dispatch(Function_call& z) {
         }
         return;
     }
+    if(z.id == "int" or z.id == "unsigned") {
+        assert(z.p_list->parameters.size() == 1);
+        z.p_list->parameters[0]->Accept(*this);
+        if(!ret) assert(0);
+        curType = typeMap.at(z.id);
+        ret = builder->CreateZExtOrTrunc(ret, llvm::Type::getInt32Ty(the_context));
+        return;
+    }
+    if(z.id == "char") {
+        assert(z.p_list->parameters.size() == 1);
+        z.p_list->parameters[0]->Accept(*this);
+        if(!ret) assert(0);
+        curType = typeMap.at(z.id);
+        ret = builder->CreateZExtOrTrunc(ret, llvm::Type::getInt8Ty(the_context));
+        return;
+    }
+    if(z.id == "bool") {
+        assert(z.p_list->parameters.size() == 1);
+        z.p_list->parameters[0]->Accept(*this);
+        if(!ret) assert(0);
+        curType = typeMap.at(z.id);
+        ret = builder->CreateICmpNE(ret, llvm::ConstantInt::get(the_context, llvm::APInt(_cpl_int_width, 0)));
+        return;
+    }
 
     llvm::Function* calleef = the_module->getFunction(z.id);
 
